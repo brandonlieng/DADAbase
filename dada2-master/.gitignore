@@ -1,0 +1,48 @@
+## R package files to ignore
+*.Rproj
+*.Rproj.user
+*.Rhistory
+.Rapp.history
+
+## Cpp files to ignore
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# OSX File
+.DS_Store
+
+.Rproj.user
+
+R/Rsingle.R
+
+inst/extdata/artificial_noupdate.fasta
+
+inst/extdata/artificial_updating.fasta
+
+.RData

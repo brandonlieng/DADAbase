@@ -14,19 +14,29 @@ shinyUI(
         ),
         tabPanel("Input",
             fluidPage(
-                titlePanel("Input"),
+                titlePanel("Data Input"),
                 sidebarLayout(
                     sidebarPanel(
-                        fileInput("dataIncoming", label = h3("Upload table"),
+                        fileInput("file1", label = h3("Upload table"),
                                   accept = c('text/csv',
                                   'text/comma-separated-values,text/plain', '.csv'))
                     ),
                     mainPanel(
+                        dataTableOutput("data")
                     )
                 )
             )
         ),
-        tabPanel("Explore"),
+        tabPanel("Explore",
+            fluidPage(
+                tabsetPanel(
+                    tabPanel("Sequences"),
+                    tabPanel("Annotation Information"),
+                    tabPanel("SVs not in DADAbase (novel)"),
+                    tabPanel("SVs already in DADAbase")
+                )
+            )
+        ),
         tabPanel("Commit")
     )
 )

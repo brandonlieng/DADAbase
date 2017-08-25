@@ -3,5 +3,3 @@ archiveNewSeqs <- function() {
 
     dbGetQuery(ch, query)
 }
-
-archiveNewSeqs()

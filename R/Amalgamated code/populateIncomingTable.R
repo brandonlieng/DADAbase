@@ -20,5 +20,3 @@ populateIncomingTable <- function(){
         dbGetQuery(ch, query)
     }
 }
-
-populateIncomingTable()

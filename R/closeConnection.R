@@ -1,4 +1,4 @@
-DADAbase.closeConnection <- function(){
+DADAbase.closeConnection <- function() {
     query <- paste("TRUNCATE newSeqs;")
     dbGetQuery(ch, query)
 

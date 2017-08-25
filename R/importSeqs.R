@@ -1,16 +1,16 @@
-DADAbase.importSeqs <- function(incoming) {
+DADAbase.importSeqs <- function(incomingTaxa) {
     highestEntryNum <- dbGetQuery(ch, "SELECT MAX(entryNum) FROM archivedSeqs;")[[1]]
     currentEntryNum <- highestEntryNum + 1
 
     if(is.na(currentEntryNum)) currentEntryNum <- 1
 
     # Inserts sequence variants and associated taxonomy into incoming table
-    for(i in 1:length(rownames(taxa))) {
-        taxaToInsert <- paste(taxa[i, ], collapse=" ")
+    for(i in 1:length(rownames(incomingTaxa))) {
+        taxaToInsert <- paste(incomingTaxa[i, ], collapse=" ")
 
-        query <- paste("INSERT INTO incoming VALUES('", rownames(taxa)[i],
-        "', ", "'", taxaToInsert, "', ", "'Unspecified' ,",
-        currentEntryNum, ");")
+        query <- paste("INSERT INTO incoming VALUES('",
+        rownames(incomingTaxa)[i], "', ", "'", taxaToInsert, "', ",
+        "'Unspecified' ,",currentEntryNum, ");")
 
         dbGetQuery(ch, query)
     }

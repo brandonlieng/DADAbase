@@ -2,6 +2,7 @@
 #'
 #' @description
 #' Commits the sequences in newSeqs to DADAbase for archiving. Reports number of sequences committed.
+#' @export
 DADAbase.commitNewSeqs <- function() {
     countBeforeCommit <- dbGetQuery(ch, "SELECT COUNT(*) FROM archivedSeqs;")
 
@@ -10,5 +11,5 @@ DADAbase.commitNewSeqs <- function() {
 
     countAfterCommit <- dbGetQuery(ch, "SELECT COUNT(*) FROM archivedSeqs;")
 
-    paste((countAfterCommit - countBeforeCommit), "sequences committed to DADAbase."
+    paste((countAfterCommit - countBeforeCommit), "sequences committed to DADAbase.")
 }

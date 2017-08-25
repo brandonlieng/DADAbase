@@ -5,6 +5,7 @@
 #' Accepts a taxonomy table and partitions out sequences that don't exist in the archivedSeqs portion of DADAbase.
 #' @examples
 #' DADAbase.importSeqs(taxa)
+#' @export
 DADAbase.importSeqs <- function(incomingTaxa) {
     highestEntryNum <- dbGetQuery(ch, "SELECT MAX(entryNum) FROM archivedSeqs;")[[1]]
     currentEntryNum <- highestEntryNum + 1

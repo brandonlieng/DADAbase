@@ -4,6 +4,7 @@
 #' Queries the entire archivedSeqs table and returns all known information.
 #' @examples
 #' all <- DADAbase.getAllSeqs()
+#' @export
 DADAbase.getAllSeqs <- function() {
     query <- paste("SELECT * FROM archivedSeqs;")
 

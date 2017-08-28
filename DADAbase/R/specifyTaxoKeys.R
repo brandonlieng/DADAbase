@@ -7,9 +7,9 @@
 #' DADAbase.specifyTaxoKeys("GreenGenes, Silva")
 #' @export
 DADAbase.specifyTaxoKeys <- function(keys) {
-    currentNewSeqCount <- dbGetQuery(ch, "SELECT COUNT(*) FROM newSeqs;")
-    if(currentNewSeqCount == 0) stop("No new sequences to add keywords to.")
+    currentIncomingCount <- dbGetQuery(ch, "SELECT COUNT(*) FROM incoming;")
+    if(currentIncomingCount == 0) stop("No new sequences to add keywords to.")
 
-    query <- paste("UPDATE newSeqs SET taxoKeys =", "'", keys, "';")
+    query <- paste("UPDATE incoming SET taxoKeys =", "'", keys, "';")
     dbGetQuery(ch, query)
 }

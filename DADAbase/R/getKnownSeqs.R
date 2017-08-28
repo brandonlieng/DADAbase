@@ -2,14 +2,37 @@
 #'
 #' @description
 #' Queries the archivedSeqs table to pull any matching sequences and stored information that show up in the input dataset.
+#' @return
+#' A data.frame of sequences and associated taxonomic data from the archive
 #' @examples
-#' knownSeqs <- DADAbase.specifyTaxoKeys("GreenGenes, Silva")
+#' knownSeqs <- DADAbase.getKnownSeqs(seqtab.nochim)
 #' @export
-DADAbase.getKnownSeqs <- function() {
-    query <- paste("SELECT accessionNum, sequence, taxonomy, taxoKeys, entryNum FROM archivedSeqs WHERE sequence IN (SELECT sequence FROM incoming);")
+DADAbase.getKnownSeqs <- function(seqMatrix) {
+    # Get sequences already archived
+    query <- paste("SELECT sequence FROM archivedSeqs;")
+    archive <- dbGetQuery(ch, query)[[1]]
+    for(i in 1:length(archive)) {
+        archive[i] <- gsub(" ", "", archive[i])
+    }
+    if(all(is.na(archive))) stop("No sequences in archive.")
 
-    known <- dbGetQuery(ch, query)
-    if(dim(known)[1] == 0) stop("No sequences that are already in DADAbase.")
+    # Pulling matching sequence information on current variants from archive,
+    # if avaliable
+    variants <- colnames(seqMatrix)
+    known <- c()
+    for(i in 1:length(variants)) {
+        if(variants[i] %in% archive) {
+            known <- c(known, variants[i])
+        }
+    }
+    if(length(known) == 0) stop("No sequences that are already in DADAbase.")
 
-    return(known)
+    # Update knownSeqs list to use as comparitor to pull from archivedSeqs
+    for(i in 1:length(known)) {
+        query <- paste("INSERT INTO knownSeqs (sequence) VALUES ('", known[i], "');")
+        dbGetQuery(ch, query)
+    }
+
+    knownData <- dbGetQuery(ch, "SELECT * FROM archivedSeqs WHERE sequence IN (SELECT sequence from archivedSeqs);")
+    return(knownData)
 }

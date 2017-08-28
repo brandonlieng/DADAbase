@@ -17,6 +17,10 @@ CREATE TABLE archivedSeqs(
     PRIMARY KEY(accessionNum)
 );
 
+CREATE TABLE knownSeqs(
+    sequence VARCHAR(400)
+);
+
 CREATE TABLE incoming(
     sequence VARCHAR(400),
     taxonomy VARCHAR(400),

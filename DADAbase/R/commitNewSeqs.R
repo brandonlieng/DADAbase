@@ -6,7 +6,7 @@
 DADAbase.commitNewSeqs <- function() {
     countBeforeCommit <- dbGetQuery(ch, "SELECT COUNT(*) FROM archivedSeqs;")
 
-    query <- paste("INSERT INTO archivedSeqs (sequence, taxonomy, taxoKeys, entryNum) SELECT sequence, taxonomy, taxoKeys, entryNum FROM newSeqs;")
+    query <- paste("INSERT INTO archivedSeqs (sequence, taxonomy, taxoKeys, entryNum) SELECT sequence, taxonomy, taxoKeys, entryNum FROM incoming;")
     dbGetQuery(ch, query)
 
     countAfterCommit <- dbGetQuery(ch, "SELECT COUNT(*) FROM archivedSeqs;")

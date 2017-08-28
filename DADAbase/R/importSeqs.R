@@ -6,25 +6,20 @@
 #' @examples
 #' DADAbase.importSeqs(taxa)
 #' @export
-DADAbase.importSeqs <- function(incomingTaxa) {
+DADAbase.importSeqs <- function(seqMatrix) {
     highestEntryNum <- dbGetQuery(ch, "SELECT MAX(entryNum) FROM archivedSeqs;")[[1]]
     currentEntryNum <- highestEntryNum + 1
 
     if(is.na(currentEntryNum)) currentEntryNum <- 1
 
     # Inserts sequence variants and associated taxonomy into incoming table
-    for(i in 1:length(rownames(incomingTaxa))) {
-        taxaToInsert <- paste(incomingTaxa[i, ], collapse=" ")
+    for(i in 1:length(colnames(seqMatrix))) {
+        query <- paste("INSERT INTO incoming (sequence, entryNum) VALUES('",
+        colnames(seqMatrix)[i], "', ", currentEntryNum, ");")
 
-        query <- paste("INSERT INTO incoming VALUES('",
-        rownames(incomingTaxa)[i], "', ", "'", taxaToInsert, "', ",
-        "'Unspecified' ,",currentEntryNum, ");")
+        query <- gsub("' ", "'", query)
+        query <- gsub(" '", "'", query)
 
         dbGetQuery(ch, query)
     }
-
-    # Push new sequences in the incoming data to newSeqs
-    query <- paste("INSERT INTO newSeqs SELECT sequence, taxonomy, taxoKeys, entryNum FROM incoming WHERE sequence NOT IN (SELECT sequence FROM archivedSeqs);")
-
-    dbGetQuery(ch, query)
 }

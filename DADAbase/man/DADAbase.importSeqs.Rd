@@ -4,13 +4,13 @@
 \alias{DADAbase.importSeqs}
 \title{Close the connection to the SQL database}
 \usage{
-DADAbase.importSeqs(incomingTaxa)
+DADAbase.importSeqs(seqMatrix)
 }
 \arguments{
-\item{incomingTaxa}{A data.frame coming from the end of the DADA2 pipeline where rows are sequences and the columns are taxonomic levels describing each sequence variant.}
+\item{seqMatrix}{A data.frame coming from the end of the DADA2 pipeline where rows are samples and the columns are sequence variants.}
 }
 \description{
-Accepts a taxonomy table and partitions out sequences that don't exist in the archivedSeqs portion of DADAbase.
+Accepts a sequence matrix and partitions out sequences that don't exist in the archivedSeqs portion of DADAbase.
 }
 \examples{
 DADAbase.importSeqs(taxa)

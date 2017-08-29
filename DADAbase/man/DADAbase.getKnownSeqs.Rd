@@ -4,11 +4,14 @@
 \alias{DADAbase.getKnownSeqs}
 \title{Pull matching known sequences from DADAbase}
 \usage{
-DADAbase.getKnownSeqs()
+DADAbase.getKnownSeqs(seqMatrix)
+}
+\value{
+A data.frame of sequences and associated taxonomic data from the archive
 }
 \description{
 Queries the archivedSeqs table to pull any matching sequences and stored information that show up in the input dataset.
 }
 \examples{
-knownSeqs <- DADAbase.specifyTaxoKeys("GreenGenes, Silva")
+knownSeqs <- DADAbase.getKnownSeqs(seqtab.nochim)
 }

@@ -1,3 +1,13 @@
+#' Pull matching known sequences from a sequence matrix
+#'
+#' @description
+#' Queries the archivedSeqs table to pull any matching sequences that show up in the archive already. Uses these matches to remove columns from the sequence matrix so that sequences already annotated are excluded from DADA2's downstream annotation.
+#'
+#' @return
+#' A data.frame of sequences and associated taxonomic data from the archive
+#' @examples
+#' knownSeqs <- DADAbase.getKnownSeqs(seqtab.nochim)
+#' @export
 DADAbase.removeKnownSeqs <- function(seqMatrix, knownData) {
     # Generate vector of sequences from known data.frame with check for known
     # object existence

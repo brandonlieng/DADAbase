@@ -13,7 +13,8 @@ CREATE TABLE archivedSeqs(
     sequence VARCHAR(400),
     taxonomy VARCHAR(400),
     taxoKeys VARCHAR(100),
-    entryNum INT,
+    groupNum INT,
+    runNum INT,
     PRIMARY KEY(accessionNum)
 );
 
@@ -25,12 +26,14 @@ CREATE TABLE incoming(
     sequence VARCHAR(400),
     taxonomy VARCHAR(400),
     taxoKeys VARCHAR(100),
-    entryNum INT
+    groupNum INT,
+    runNum INT
 );
 
-CREATE TABLE newSeqs(
-sequence VARCHAR(400),
-taxonomy VARCHAR(400),
-taxoKeys VARCHAR(100),
-entryNum INT
+CREATE TABLE entryMetadata(
+    runNum INT,
+    platform varchar(100),
+    operator varchar(100),
+    entryDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(runNum)
 );

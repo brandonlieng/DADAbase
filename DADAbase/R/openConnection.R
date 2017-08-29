@@ -1,5 +1,3 @@
-library(RMySQL)
-
 #' Open a connection to the SQL database
 #'
 #' @param u The username to be passed to log into the MySQL server

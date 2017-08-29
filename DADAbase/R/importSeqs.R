@@ -1,21 +1,21 @@
 #' Close the connection to the SQL database
 #'
-#' @param incomingTaxa A data.frame coming from the end of the DADA2 pipeline where rows are sequences and the columns are taxonomic levels describing each sequence variant.
+#' @param seqMatrix A data.frame coming from the end of the DADA2 pipeline where rows are samples and the columns are sequence variants.
 #' @description
-#' Accepts a taxonomy table and partitions out sequences that don't exist in the archivedSeqs portion of DADAbase.
+#' Accepts a sequence matrix and partitions out sequences that don't exist in the archivedSeqs portion of DADAbase.
 #' @examples
 #' DADAbase.importSeqs(taxa)
 #' @export
 DADAbase.importSeqs <- function(seqMatrix) {
-    highestEntryNum <- dbGetQuery(ch, "SELECT MAX(entryNum) FROM archivedSeqs;")[[1]]
-    currentEntryNum <- highestEntryNum + 1
+    highestRunNum <- dbGetQuery(ch, "SELECT MAX(runNum) FROM archivedSeqs;")[[1]]
+    currentRunNum <- highestRunNum + 1
 
-    if(is.na(currentEntryNum)) currentEntryNum <- 1
+    if(is.na(currentRunNum)) currentRunNum <- 1
 
     # Inserts sequence variants and associated taxonomy into incoming table
     for(i in 1:length(colnames(seqMatrix))) {
-        query <- paste("INSERT INTO incoming (sequence, entryNum) VALUES('",
-        colnames(seqMatrix)[i], "', ", currentEntryNum, ");")
+        query <- paste("INSERT INTO incoming (sequence, runNum) VALUES('",
+        colnames(seqMatrix)[i], "', ", currentRunNum, ");")
 
         query <- gsub("' ", "'", query)
         query <- gsub(" '", "'", query)

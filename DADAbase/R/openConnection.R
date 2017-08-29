@@ -8,6 +8,7 @@
 #' DADAbase.openConnection('sampleusername', 'samplepassword')
 #' @export
 DADAbase.openConnection <- function(u = NULL, pass = NULL) {
+    library(RMySQL)
     if(is.null(u)) stop("Specify username.")
     if(is.null(pass)) stop("Specify password.")
 

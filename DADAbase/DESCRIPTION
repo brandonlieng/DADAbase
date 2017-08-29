@@ -3,9 +3,8 @@ Title: Sequence Variant Archive Database from DADA2
 Version: 0.0.0.9000
 Author: Brandon Lieng [aut, cre],
 Description: This is a suite of functions to interact with the SQL-coded database 	“DADAbase”. DADAbase’s role is to hold sequence variants and associated annotation 	information from DADA2 pipeline outputs.
-Depends: R (>= 3.4.1)
+Depends: R (>= 3.4.1), RMySQL
 License: Proprietary 
 Encoding: UTF-8
 LazyData: true
-Imports: RMySQL
 RoxygenNote: 6.0.1.9000

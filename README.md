@@ -23,7 +23,7 @@ Ensure you are in an active R session and call `library(DADAbase)` to load in DA
 <hr>
 
 ### I. Opening a connection to DADAbase
-Use the `DADAbase.openConnection()` function to establish a link to cjelli's MySQL server and, more specifically, DADAbase. Enter your credentials as such: `DADAbase.openConnection(username, password)`.
+Use the `DADAbase.openConnection()` function to establish a link to cjelli's MySQL server and, more specifically, DADAbase. Enter your credentials as such: `DADAbase.openConnection('username', 'password')`.
 
 A message will relay if you are successfully connected to DADAbase.
 

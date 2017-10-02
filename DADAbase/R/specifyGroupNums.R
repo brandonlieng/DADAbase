@@ -6,7 +6,7 @@
 #' DADAbase.specifyTaxoKeys(" GreenGenes, Silva")
 #' @export
 DADAbase.specifyGroupNums <- function(groupNumTable) {
-    if(all(colnames(groupNumTable) != c("Sequence", "Group")) | class(groupNumTable$group != "numeric")) stop("Invalid group number data frame supplied. Please refer to documentation for proper formatting.")
+    if(all(colnames(groupNumTable) == c("Sequence", "Group")) == FALSE || class(groupNumTable$Group) != "numeric") stop("Invalid group number data frame supplied. Please refer to documentation for proper formatting.")
 
     currentIncomingCount <- dbGetQuery(ch, "SELECT COUNT(*) FROM incoming;")
     if(currentIncomingCount == 0) stop("No new sequences to add group numbers to.")

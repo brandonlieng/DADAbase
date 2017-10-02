@@ -21,9 +21,12 @@ DADAbase.specifyMetadata <- function() {
         platformInput <- readline("Enter the platform used for this run (e.g. miseq/hiseq/nextseq): ")
         operatorInput <- readline("Enter your name: ")
 
-        doneQuery <- readline("You entered ", platformInput, " as the platform for this run. This run will be logged under the name ", operatorInput, ". Is this information correct? (Y/N): ")
-        if(doneQuery == "Y" | doneQuery == "y") {
+        doneQuery <- readline("Is the above information correct? (Y/N): ")
+
+        if(doneQuery == "Y" || doneQuery == "y") {
             doneFlag <- TRUE
+            query <- paste("INSERT INTO entryMetadata (runNum, platform, operator) VALUES (", currentRunNum, ", '", platformInput, "', '", operatorInput, "');")
+            dbGetQuery(ch, query)
         }
         else {
             paste("\n\n")

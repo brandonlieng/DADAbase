@@ -5,7 +5,7 @@
 #' @return
 #' A data.frame of sequences and associated taxonomic data from the archive
 #' @examples
-#' knownSeqs <- DADAbase.getKnownSeqs(seqtab.nochim)
+#' seqtab.known <- DADAbase.getKnownSeqs(seqtab.nochim)
 #' @export
 DADAbase.getKnownSeqs <- function(seqMatrix) {
     # Get sequences already archived
@@ -34,5 +34,8 @@ DADAbase.getKnownSeqs <- function(seqMatrix) {
     }
 
     knownData <- dbGetQuery(ch, "SELECT * FROM archivedSeqs WHERE sequence IN (SELECT sequence from archivedSeqs);")
+
+    paste(dim(knownData)[1], " sequences are already in DADAbase.")
+
     return(knownData)
 }

@@ -10,7 +10,7 @@ devtools::github_install('brandonlieng/DADAbase/DADAbase')
 
 
 ## Using DADAbase
-After going through the majority of the DADA2 pipeline as outlined in the tutorial [here](http://benjjneb.github.io/dada2/tutorial.html), the user should come to the point where they have a sequence matrix consisting of samples on rows and sequence variants on columns. The purpose of DADAbase is to identify sequence variants that already have been seen before and are archived in DADAbase so that the user does not need to annotate them again. 
+After going through the majority of the DADA2 pipeline as outlined in the tutorial [here](http://benjjneb.github.io/dada2/tutorial.html), the user should come to the point where they have a sequence matrix consisting of samples on rows and sequence variants on columns. The purpose of DADAbase is to identify sequence variants that already have been seen before and are archived in DADAbase so that the user does not need to annotate them again.
 
 DADAbase will:
 * Parse the variants in the sequence matrix, column by column
@@ -39,35 +39,35 @@ To retrieve annotated sequence variants in DADAbase that appear in your sequence
 ### III. Remove known sequence variants
 After exploring `seqtab.known`, we can remove sequence variants which we already have data for so that we're left with sequence variants for downstream annotation.
 
-Store the output data frame of `DADAbase.removeKnownSeqs(seqtab.nochim, seqtab.known)` into another variable such as `seqtab.removed`. This data frame holds only sequences that don't already exist in DADAbase.
+Store the output data frame of `DADAbase.removeKnownSeqs(seqtab.nochim, seqtab.known)` into another variable such as `seqtab.novel`. This data frame holds only sequences that don't already exist in DADAbase.
 
 <hr>
 
 ### IV. Import novel sequence variants
-Now that we have our data frame of novel sequence variants, we can import them into DADAbase for annotation and committing. Load your novel data frame with `DADAbase.importSeqs(seqtab.removed)`.
+Now that we have our data frame of novel sequence variants, we can convert them into a matrix that will be standard for DADAbase to import. This matrix will come with columns for you to add annotation information. Load your novel data into an import matrix with `DADAbase.prepareNovelSeqs(seqtab.removed)` and store it into another variable. An example: `seqtab.import <- DADAbase.prepareNovelSeqs(seqtab.removed)`.
 
 <hr>
 
-### V. Adding annotations, tool information, grouping information, and entry metadata
-How you do this step is entirely up to you, so long as you end up with two data frames with the specific formatting required for DADAbase commits.
+### V. Adding annotations, tool information, and grouping information
+We now have a matrix with six columns. The first column should already be populated with novel sequence variants. The remaining five columns are for matching taxonomy, taxonomic assignment tool information, primer and annealing temperature information, associated DOIs, and run/group number information.
 
-* A data frame of two columns titled EXACTLY "Sequences" and "Group" (we will call it `groupings`)
-This data frame should pair each sequence variant from `seqtab.removed` with a group number from the run.
+How you fill this matrix is entirely up to you. Each sequence variant should have information across the columns. To enter information into a column, its easiest to just insert the whole column as a vector in one shot. A requirement for this though, is that the order of the values in the vector you're inserting match the order of the sequence variants present in the 'sequence' column.
 
-* A data frame of two columns titled EXACTLY "Sequences" and "Taxonomy" (we will call it `annoInfo`)
-This data frame should pair each sequence variant from `seqtab.removed` with its taxonomic information. Preferably, the information should exist in the following format: "Kingdom; Phylum; Class; Order; Family; Genus; Species".
-
-To associate the sequence variants loaded in DADAbase with their grouping and annotations, call the following two functions on the above data frames.
-
+If all the values are the same for annotation tools and primer/annealing temperature information, the insertion is rather easy.
 ```
-DADAbase.specifyGroupNums(groupings)
-DADAbase.specifyTaxonomy(annoInfo)
+# Used GreenGenes for example
+seqtab.import[, "taxoMethod"] <- c(rep("GreenGenes", dim(seqtab.import)[1]))
+
+# Replace the "V4" with what describes the primers you used -- see https://github.com/ggloor/miseq_bin/blob/master/primer_sequences.txt
+seqtab.import[, "primers"] <- c(rep("V4", dim(seqtab.import)[1]))
+
+# Example if the annealing temperature was 41 deg. Celsius
+seqtab.import[, "annealingTemp"] <- c(rep(41, dim(seqtab.import)[1]))
 ```
 
-To associate annotation tools and keywords to all sequence variants imported, call `DADAbase.specifyTaxoKeys(keys)`, where `keys` is a string specifying the tools used to annotate the sequences. For example, `keys` might be `"GreenGenes; Silva"`.
+For other columns, where the information is rather variable, make a vector first and edit it. Then, insert that vector into the appropriate column in one go.
 
-Entry metadata is recorded through `DADAbase.specifyMetadata()`. Call this function and follow the prompts to enter metadata.
-
+Once you have a properly filled out matrix, the novel variants are ready for insert into DADAbase!
 <hr>
 
 ### VI. Commit annotated sequence variants to DADAbase

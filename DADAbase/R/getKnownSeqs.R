@@ -8,34 +8,21 @@
 #' seqtab.known <- DADAbase.getKnownSeqs(seqtab.nochim)
 #' @export
 DADAbase.getKnownSeqs <- function(seqMatrix) {
-    # Get sequences already archived
-    query <- paste("SELECT sequence FROM archivedSeqs;")
-    archive <- dbGetQuery(ch, query)[[1]]
-    for(i in 1:length(archive)) {
-        archive[i] <- gsub(" ", "", archive[i])
-    }
-    if(all(is.na(archive))) stop("No sequences in archive.")
+    # Check to make sure DADAbase is populated
+    query <- paste("SELECT COUNT(*) FROM sequence;")
+    count <- dbGetQuery(ch, query)[[1]]
+    if(count == 0) stop("No sequences in DADAbase.")
 
-    # Pulling matching sequence information on current variants from archive,
-    # if avaliable
+    # Pulling matching sequence information on current variants
     variants <- colnames(seqMatrix)
-    known <- c()
-    for(i in 1:length(variants)) {
-        if(variants[i] %in% archive) {
-            known <- c(known, variants[i])
-        }
-    }
-    if(length(known) == 0) stop("No sequences that are already in DADAbase.")
+    variantsToQuery <- paste("'", paste(variants, collapse="', '"), "'", sep = "")
 
-    # Update knownSeqs list to use as comparitor to pull from archivedSeqs
-    for(i in 1:length(known)) {
-        query <- paste("INSERT INTO knownSeqs (sequence) VALUES ('", known[i], "');")
-        dbGetQuery(ch, query)
-    }
+    query <- paste("SELECT * FROM sequence WHERE sequence in (", variantsToQuery, ");", sep="")
+    known <- dbGetQuery(ch, query)
 
-    knownData <- dbGetQuery(ch, "SELECT * FROM archivedSeqs WHERE sequence IN (SELECT sequence from archivedSeqs);")
+    if(dim(known)[1] == 0) stop("No sequences that are already in DADAbase.")
+    numKnown <- paste(as.character(dim(known)[1]), "sequences are already in DADAbase.")
+    print(numKnown)
 
-    paste(dim(knownData)[1], " sequences are already in DADAbase.")
-
-    return(knownData)
+    return(known)
 }

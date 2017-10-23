@@ -13,12 +13,12 @@ CREATE TABLE sequence(
 );
 
 CREATE TABLE runNum(
-    accessNum INT,
+    runNum INT,
     groupNum INT
 );
 
 CREATE TABLE entry(
-    runNum INT,
+    runNum INT NOT NULL AUTO_INCREMENT,
     entryDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     platform varchar(100),
     operator varchar(100),

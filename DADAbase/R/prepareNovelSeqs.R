@@ -11,7 +11,12 @@ DADAbase.prepareNovelSeqs <- function(seqMatrix) {
 
     colnames(novelSeqs) <- c("sequence", "taxonomy", "taxoMethod", "primers", "annealingTemp", "doi", "runNum", "groupNum")
 
+    novelSeqs <- data.frame(novelSeqs, check.names=F)
+
     novelSeqs[,1] <- colnames(seqMatrix)
+
+    runNum <- dbGetQuery(ch, "SELECT COUNT(*) FROM entry;")[[1]] + 1
+    novelSeqs[, 7] <- as.numeric(rep(runNum, dim(seqMatrix)[2]))
 
     return(novelSeqs)
 }

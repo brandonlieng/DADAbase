@@ -56,24 +56,24 @@ How you fill this matrix is entirely up to you. Each sequence variant should hav
 If all the values are the same for annotation tools and primer/annealing temperature information, the insertion is rather easy.
 ```
 # Used GreenGenes for example
-seqtab.import[, "taxoMethod"] <- c(rep("GreenGenes", dim(seqtab.import)[1]))
+seqtab.import$taxoMethod <- c(rep("GreenGenes", dim(seqtab.import)[1]))
 
 # Replace the "V4" with what describes the primers you used -- see https://github.com/ggloor/miseq_bin/blob/master/primer_sequences.txt
-seqtab.import[, "primers"] <- c(rep("V4", dim(seqtab.import)[1]))
+seqtab.import$primers <- c(rep("V4", dim(seqtab.import)[1]))
 
 # Example if the annealing temperature was 41 deg. Celsius
-seqtab.import[, "annealingTemp"] <- c(rep(41, dim(seqtab.import)[1]))
+seqtab.import$annealingTemp<- c(rep(41, dim(seqtab.import)[1]))
 ```
 
 For other columns, where the information is rather variable, make a vector first and edit it. Then, insert that vector into the appropriate column in one go.
 
-Once you have a properly filled out matrix, the novel variants are ready for insert into DADAbase!
+Once you have a properly filled out matrix, the novel variants are ready for insertion into DADAbase!
 <hr>
 
 ### VI. Commit annotated sequence variants to DADAbase
-Now that we have annotated our sequences and have entered our metadata, its time to commit them into DADAbase's archive. This step is easy, just enter: `DADAbase.commitNewSeqs()`. A message will notify you of how many sequences are committed.
+Now that we have annotated our sequences and have entered our metadata, its time to commit them into DADAbase's archive. This step is easy, just enter: `DADAbase.commit()`. Enter metadata according to prompts. A message will notify you of how many sequences are committed successfully.
 
 <hr>
 
 ### VII. Close the connection to DADAbase
-Close the connection to MySQL and purge the incoming data using `DADAbase.closeConnection()`.
+Close the connection to DADAbase using `DADAbase.closeConnection()`.

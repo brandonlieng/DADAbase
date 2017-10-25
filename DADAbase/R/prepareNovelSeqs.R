@@ -7,9 +7,9 @@
 #' DADAbase.importSeqs(seqtab.removed)
 #' @export
 DADAbase.prepareNovelSeqs <- function(seqMatrix) {
-    novelSeqs <- matrix(nrow = (dim(seqMatrix)[2]), ncol = 8)
+    novelSeqs <- matrix(nrow = (dim(seqMatrix)[2]), ncol = 7)
 
-    colnames(novelSeqs) <- c("sequence", "taxonomy", "taxoMethod", "primers", "annealingTemp", "doi", "runNum", "groupNum")
+    colnames(novelSeqs) <- c("sequence", "taxonomy", "taxoMethod", "primers", "annealingTemp", "doi", "groupNum")
 
     novelSeqs <- data.frame(novelSeqs, check.names=F)
 

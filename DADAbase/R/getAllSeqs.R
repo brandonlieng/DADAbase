@@ -6,10 +6,10 @@
 #' all <- DADAbase.getAllSeqs()
 #' @export
 DADAbase.getAllSeqs <- function() {
-    query <- paste("SELECT * FROM archivedSeqs;")
+    query <- paste("SELECT * FROM sequence;")
 
     archived <- dbGetQuery(ch, query)
-    if(dim(archived)[1] == 0) stop("Archive is empty.")
+    if(dim(archived)[1] == 0) stop("No sequences in DADAbase.")
 
     return(archived)
 }

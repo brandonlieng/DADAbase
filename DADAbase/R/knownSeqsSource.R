@@ -9,7 +9,7 @@
 #' @export
 DADAbase.knownSeqsSource <- function(key, queryOnSeq = FALSE) {
     if(class(key) == "character" & queryOnSeq) {
-        assert("The key for querying on is a string. Set queryOnSeq param to TRUE")
+        stop("The key for querying on is a string. Set queryOnSeq param to TRUE")
     } else if(!queryOnSeq) {
         query <- paste("SELECT * FROM SequenceInEntry WHERE accessNum=", key, ";", sep="", collapse="")
         if(dim(dbGetQuery(ch, query))[1] == 0) {assert("Sequence not found.")}

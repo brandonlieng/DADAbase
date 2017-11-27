@@ -6,7 +6,7 @@
 #' DADAbase.openConnection()
 #' @export
 DADAbase.openConnection <- function() {
-    library(RMySQL)
+    library(RSQLite)
 
     # Connection object
     ch <<- dbConnect(RSQLite::SQLite(), "dadabase.db")

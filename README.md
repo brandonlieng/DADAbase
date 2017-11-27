@@ -46,11 +46,11 @@ Store the output data frame of `DADAbase.removeKnownSeqs(seqtab.nochim, seqtab.k
 <hr>
 
 ### IV. Import novel sequence variants
-Now that we have our data frame of novel sequence variants, we can convert them into a matrix that will be standard for DADAbase to import. This matrix will come with columns for you to add annotation information. Load your novel data frame and known data frame into two import frames with `DADAbase.prepareSeqs(seqtab.removed, seqtab.known)` and store it into another variable. An example: `seqtab.import <- DADAbase.prepareNovelSeqs(seqtab.removed)`. seqtab.import holds a list containing two data frames.
+Now that we have our data frame of novel sequence variants, we can convert them into a matrix that will be standard for DADAbase to import. This matrix will come with columns for you to add annotation information. Load your novel data frame and known data frame into two import frames with `DADAbase.prepareSeqs(seqtab.removed, seqtab.known)` and store it into another variable. An example: `seqtab.import <- DADAbase.prepareSeqs(seqtab.removed, seqtab.known)`. `seqtab.import` holds a list containing two data frames. If you don't provide a known sequence data frame, `seqtab.import` will only be one data frame of prepared novel seqs.
 <hr>
 
 ### V. Adding annotations, tool information, and grouping information
-We now have two data frames with six columns.
+We now have two data frames-- one with six columns and another with two-- or we have one data frame of novel sequences.
 
 #### a. Novel Sequence Preparation
 The first column should already be populated with novel sequence variants. The remaining five columns are for matching taxonomy, taxonomic assignment tool information, primer and annealing temperature information, associated DOIs, and run/group number information.
@@ -81,6 +81,7 @@ Once you have a properly filled out matrix, the novel variants are ready for ins
 ### VI. Commit annotated sequence variants to DADAbase
 Now that we have annotated our sequences and have entered our metadata, its time to commit them into DADAbase's archive. This step is easy, just enter: `DADAbase.commit()`. Enter metadata according to prompts. A message will notify you of how many sequences are committed successfully.
 
+NOTE: At the moment, RSQLite (a package that DADAbases uses) has a known issue that returns a warning for every sequence committed to DADAbase. Don't worry about these, they're not important and the commit process is still working.
 <hr>
 
 ### VII. Close the connection to DADAbase

@@ -9,7 +9,8 @@ CREATE TABLE Sequence(
     taxoMethod VARCHAR(100),
     primers VARCHAR(10),
     annealingTemp INTEGER,
-    doi VARCHAR(30)
+    doi VARCHAR(30),
+    groupNum INTEGER
 );
 
 CREATE TABLE Entry(

@@ -36,7 +36,7 @@ DADAbase.commit <- function(importMat, knownSeqs=NULL) {
     for(i in 1:(dim(importMat)[1])) {
         insert <- as.vector(importMat[i,])
 
-        query <- paste("INSERT INTO sequence VALUES (NULL, '", insert[1], "', '", insert[2], "', '", insert[3], "', '", insert[4], "', '", insert[5], "', '", insert[6], "');", sep="")
+        query <- paste("INSERT INTO sequence VALUES (NULL, '", insert[1], "', '", insert[2], "', '", insert[3], "', '", insert[4], "', '", insert[5], "', '", insert[6], "', ", insert[7], ");", sep="")
         dbGetQuery(ch, query)
 
         query <- paste("SELECT accessNum FROM Sequence WHERE sequence='", insert[1], "';", sep="")[[1]]

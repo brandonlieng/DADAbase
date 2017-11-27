@@ -18,7 +18,7 @@ DADAbase will:
 * Partition out sequence variants from the matrix that are novel (to DADAbase, at least) for downstream taxonomy assignment
 * Allow for the user to commit new annotated sequences to DADAbase
 
-Ensure you are in an active R session and call `library(DADAbase)` to load in DADAbase.
+Ensure you are in an active R session and call `library(DADAbase)` to load DADAbase.
 
 <hr>
 
@@ -34,6 +34,8 @@ At this point in the DADA2 pipeline, you should have a sequence matrix. In the t
 
 To retrieve annotated sequence variants in DADAbase that appear in your sequence matrix, pass it into `DADAbase.getKnownSeqs()` as an argument and store the returned data frame into a separate variable. Example: `seqtab.known <- DADAbase.getKnownSeqs(seqtab.nochim)`. Sequence variants and annotations are now loaded into `seqtab.known`.
 
+Note: If you don't store this in an extra table, the resulting data frame that prints can look a little messy!
+
 <hr>
 
 ### III. Remove known sequence variants
@@ -44,28 +46,34 @@ Store the output data frame of `DADAbase.removeKnownSeqs(seqtab.nochim, seqtab.k
 <hr>
 
 ### IV. Import novel sequence variants
-Now that we have our data frame of novel sequence variants, we can convert them into a matrix that will be standard for DADAbase to import. This matrix will come with columns for you to add annotation information. Load your novel data into an import matrix with `DADAbase.prepareNovelSeqs(seqtab.removed)` and store it into another variable. An example: `seqtab.import <- DADAbase.prepareNovelSeqs(seqtab.removed)`.
-
+Now that we have our data frame of novel sequence variants, we can convert them into a matrix that will be standard for DADAbase to import. This matrix will come with columns for you to add annotation information. Load your novel data frame and known data frame into two import frames with `DADAbase.prepareSeqs(seqtab.removed, seqtab.known)` and store it into another variable. An example: `seqtab.import <- DADAbase.prepareNovelSeqs(seqtab.removed)`. seqtab.import holds a list containing two data frames.
 <hr>
 
 ### V. Adding annotations, tool information, and grouping information
-We now have a matrix with six columns. The first column should already be populated with novel sequence variants. The remaining five columns are for matching taxonomy, taxonomic assignment tool information, primer and annealing temperature information, associated DOIs, and run/group number information.
+We now have two data frames with six columns.
 
-How you fill this matrix is entirely up to you. Each sequence variant should have information across the columns. To enter information into a column, its easiest to just insert the whole column as a vector in one shot. A requirement for this though, is that the order of the values in the vector you're inserting must match the order of the sequence variants present in the 'sequence' column.
+#### a. Novel Sequence Preparation
+The first column should already be populated with novel sequence variants. The remaining five columns are for matching taxonomy, taxonomic assignment tool information, primer and annealing temperature information, associated DOIs, and run/group number information.
+
+How you fill this matrix is entirely up to you. Each sequence variant should have information across the columns. To enter information into a column, it's easiest to just insert the whole column as a vector in one shot. A requirement for this though, is that the order of the values in the vector you're inserting must match the order of the sequence variants present in the 'sequence' column.
 
 If all the values are the same for annotation tools and primer/annealing temperature information, the insertion is rather easy.
 ```
 # Used GreenGenes for example
-seqtab.import$taxoMethod <- c(rep("GreenGenes", dim(seqtab.import)[1]))
+seqtab.import$novelSeqs$taxoMethod <- c(rep("GreenGenes", dim(seqtab.import)[1]))
 
 # Replace the "V4" with what describes the primers you used -- see https://github.com/ggloor/miseq_bin/blob/master/primer_sequences.txt
-seqtab.import$primers <- c(rep("V4", dim(seqtab.import)[1]))
+seqtab.import$novelSeqs$primers <- c(rep("V4", dim(seqtab.import)[1]))
 
 # Example if the annealing temperature was 41 deg. Celsius
-seqtab.import$annealingTemp<- c(rep(41, dim(seqtab.import)[1]))
+seqtab.import$novelSeqs$annealingTemp<- c(rep(41, dim(seqtab.import)[1]))
 ```
 
 For other columns, where the information is rather variable, make a vector first and edit it. Then, insert that vector into the appropriate column in one go.
+
+#### b. Known Sequence Preparation
+For known sequences, we can update DADAbase to show that they were seen in this particular run as well. The knownSeqs data frame allows you to match up sequences with group numbers if your run consisted of multiple groups.
+
 
 Once you have a properly filled out matrix, the novel variants are ready for insertion into DADAbase!
 <hr>
@@ -80,7 +88,7 @@ Close the connection to DADAbase using `DADAbase.closeConnection()`.
 
 <hr>
 
-## Querying DADAbase to find information on variants
+## Querying DADAbase to find metadata on variants
 There are two ways one can go about this.
 
 In the first method, we start with a table of variants from DADA2 and want to know more about ones we have information on. In this case, it is easiest to use `DADAbase.getKnownSeqs()` to retrieve a data frame of information.
@@ -91,3 +99,8 @@ In the second method, we are just searching the DADAbase archive using query ter
 3. Whether or not we want exact string matches (by default is FALSE)
 
 For example, if I wanted to get information for all sequences and information where the sequence was annotated to *Lactobacillus*, I would enter `DADAbase.query('Lactobacillus', 'taxonomy')`. Note that if I had put TRUE in as the third parameter, I would get no rows back. If I put TRUE in for exact matches only, I need to know the exact contents of the entire field I'm looking for.
+
+## Querying DADAbase to find history on variants in previous runs
+Using `DADAbase.knownSeqsSource`, we can query DADAbase's history to find where a particular sequence has been seen before.
+
+If you know the accessNum (first column in the seqtab.known frame), you can query just with that single number like so: `DADAbase.knownSeqsSource(122)`. If you would like to query by sequence, you can do so with `DADAbase.knownSeqsSource("sequence", queryOnSeq=TRUE)` where `sequence` is your string.

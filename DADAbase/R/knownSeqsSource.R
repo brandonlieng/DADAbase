@@ -8,12 +8,16 @@
 #' DADAbase.knownSeqsSource(12)
 #' @export
 DADAbase.knownSeqsSource <- function(key, queryOnSeq = FALSE) {
-    if(class(key) == "character" & queryOnSeq) {assert("The key for querying on is a string. Set queryOnSeq param to TRUE")}
-    if(!queryOnSeq) {
+    if(class(key) == "character" & queryOnSeq) {
+        assert("The key for querying on is a string. Set queryOnSeq param to TRUE")
+    } else if(!queryOnSeq) {
         query <- paste("SELECT * FROM SequenceInEntry WHERE accessNum=", key, ";", sep="", collapse="")
+        if(dim(dbGetQuery(ch, query))[1] == 0) {assert("Sequence not found.")}
         dbGetQuery(ch, query)
     } else if (queryOnSeq) {
         query <- paste("SELECT accessNum, runNum, groupNum FROM SequenceInEntry NATURAL JOIN Sequence WHERE sequence='", key, "';", sep="", collapse="")
+        dbGetQuery(ch, query)
+        if(dim(dbGetQuery(ch, query))[1] == 0) {assert("Sequence not found.")}
         dbGetQuery(ch, query)
     }
 }

@@ -13,5 +13,5 @@ A data.frame of sequences and associated taxonomic data from the archive
 Queries the archivedSeqs table to pull any matching sequences that show up in the archive already. Uses these matches to remove columns from the sequence matrix so that sequences already annotated are excluded from DADA2's downstream annotation.
 }
 \examples{
-knownSeqs <- DADAbase.getKnownSeqs(seqtab.nochim)
+seqtab.removed <- DADAbase.removeKnownSeqs(seqtab.nochim, seqtab.known)
 }

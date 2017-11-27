@@ -2,25 +2,31 @@
 
 USE DADAbase;
 */
-CREATE TABLE sequence(
-    accessNum INT NOT NULL AUTO_INCREMENT,
-    sequence VARCHAR(400),
+CREATE TABLE Sequence(
+    accessNum INTEGER PRIMARY KEY,
+    sequence VARCHAR(400) UNIQUE,
     taxonomy VARCHAR(400),
     taxoMethod VARCHAR(100),
-    runNum INT,
-    groupNum INT,
-    PRIMARY KEY(accessNum)
+    primers VARCHAR(10),
+    annealingTemp INTEGER,
+    doi VARCHAR(30)
 );
 
-CREATE TABLE runNum(
-    runNum INT,
-    groupNum INT
-);
-
-CREATE TABLE entry(
-    runNum INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE Entry(
+    runNum INTEGER PRIMARY KEY,
     entryDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    platform varchar(100),
-    operator varchar(100),
-    PRIMARY KEY(runNum)
+    platform VARCHAR(100),
+    operator VARCHAR(100)
+);
+
+CREATE TABLE SequenceInEntry(
+    accessNum INTEGER,
+    runNum INTEGER,
+    groupNum INTEGER,
+    CONSTRAINT accessNum
+    FOREIGN KEY (accessNum) REFERENCES Sequence (accessNum)
+    ON DELETE CASCADE,
+    CONSTRAINT runNum
+    FOREIGN KEY (runNum) REFERENCES Entry (runNum)
+    ON DELETE CASCADE
 );

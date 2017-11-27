@@ -23,7 +23,7 @@ Ensure you are in an active R session and call `library(DADAbase)` to load in DA
 <hr>
 
 ### I. Opening a connection to DADAbase
-Use the `DADAbase.openConnection()` function to establish a link to cjelli's MySQL server and, more specifically, DADAbase. Enter your credentials as such: `DADAbase.openConnection('username', 'password')`.
+Use the `DADAbase.openConnection()` function to establish a link to cjelli's sqlite server and, more specifically, DADAbase.
 
 A message will relay if you are successfully connected to DADAbase.
 
@@ -51,7 +51,7 @@ Now that we have our data frame of novel sequence variants, we can convert them 
 ### V. Adding annotations, tool information, and grouping information
 We now have a matrix with six columns. The first column should already be populated with novel sequence variants. The remaining five columns are for matching taxonomy, taxonomic assignment tool information, primer and annealing temperature information, associated DOIs, and run/group number information.
 
-How you fill this matrix is entirely up to you. Each sequence variant should have information across the columns. To enter information into a column, its easiest to just insert the whole column as a vector in one shot. A requirement for this though, is that the order of the values in the vector you're inserting match the order of the sequence variants present in the 'sequence' column.
+How you fill this matrix is entirely up to you. Each sequence variant should have information across the columns. To enter information into a column, its easiest to just insert the whole column as a vector in one shot. A requirement for this though, is that the order of the values in the vector you're inserting must match the order of the sequence variants present in the 'sequence' column.
 
 If all the values are the same for annotation tools and primer/annealing temperature information, the insertion is rather easy.
 ```
@@ -77,3 +77,17 @@ Now that we have annotated our sequences and have entered our metadata, its time
 
 ### VII. Close the connection to DADAbase
 Close the connection to DADAbase using `DADAbase.closeConnection()`.
+
+<hr>
+
+## Querying DADAbase to find information on variants
+There are two ways one can go about this.
+
+In the first method, we start with a table of variants from DADA2 and want to know more about ones we have information on. In this case, it is easiest to use `DADAbase.getKnownSeqs()` to retrieve a data frame of information.
+
+In the second method, we are just searching the DADAbase archive using query terms. In this case, one would use `DADAbase.query()` to match terms. The `DADAbase.query()` function takes three parameters:
+1. The term we would like to query for (e.g. "V4")
+2. The attribute we would like to query on (e.g. "primers")
+3. Whether or not we want exact string matches (by default is FALSE)
+
+For example, if I wanted to get information for all sequences and information where the sequence was annotated to *Lactobacillus*, I would enter `DADAbase.query('Lactobacillus', 'taxonomy')`. Note that if I had put TRUE in as the third parameter, I would get no rows back. If I put TRUE in for exact matches only, I need to know the exact contents of the entire field I'm looking for.

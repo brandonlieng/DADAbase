@@ -13,5 +13,5 @@ A data.frame of sequences and associated taxonomic data from the archive
 Queries the archivedSeqs table to pull any matching sequences and stored information that show up in the input dataset.
 }
 \examples{
-knownSeqs <- DADAbase.getKnownSeqs(seqtab.nochim)
+seqtab.known <- DADAbase.getKnownSeqs(seqtab.nochim)
 }

@@ -4,16 +4,11 @@
 \alias{DADAbase.openConnection}
 \title{Open a connection to the SQL database}
 \usage{
-DADAbase.openConnection(u = NULL, pass = NULL)
-}
-\arguments{
-\item{u}{The username to be passed to log into the MySQL server}
-
-\item{pass}{The password to be passed to log into the MySQL server}
+DADAbase.openConnection()
 }
 \description{
-Uses the \code{RMySQL} package to establish a connection to DADAbase from the active R session.
+Uses the \code{RSQLite} package to establish a connection to DADAbase from the active R session.
 }
 \examples{
-DADAbase.openConnection('sampleusername', 'samplepassword')
+DADAbase.openConnection()
 }

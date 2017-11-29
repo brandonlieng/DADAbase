@@ -9,7 +9,7 @@ DADAbase.openConnection <- function() {
     library(RSQLite)
 
     # Connection object
-    ch <<- dbConnect(RSQLite::SQLite(), "dadabase.db")
+    ch <<- dbConnect(RSQLite::SQLite(), "/Volumes/longlunch/seq/annotationDB/dada2/DADAbase.db")
 
     if(exists('ch')) {paste("Successfully connected to DADAbase.")}
 }

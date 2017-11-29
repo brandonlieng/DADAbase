@@ -11,9 +11,10 @@
 DADAbase.query <- function(queryTerm, matchOn, exactMatching=FALSE) {
     if(exactMatching == TRUE) {
         query <- paste("SELECT * FROM sequence WHERE ", matchOn, "='", queryTerm, "';", sep="")
+        return(dbGetQuery(query))
     }
     else {
         query <- paste("SELECT * FROM sequence WHERE ", matchOn, " LIKE '%", queryTerm, "%';", sep="")
+        return(dbGetQuery(query))
     }
-    paste(query)
 }

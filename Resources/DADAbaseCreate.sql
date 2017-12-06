@@ -1,33 +1,62 @@
-/*CREATE DATABASE DADAbase;
-
-USE DADAbase;
-*/
 CREATE TABLE Sequence(
-    accessNum INTEGER PRIMARY KEY,
+    seqID INTEGER NOT NULL PRIMARY KEY,
     sequence VARCHAR(400) UNIQUE,
-    taxonomy VARCHAR(400),
-    taxoMethod VARCHAR(100),
+    primaryassign INTEGER,
+
+    CONSTRAINT primaryassign
+    FOREIGN KEY (primaryassign) REFERENCES Assignment (taxoID)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Taxonomy(
+    taxoID INTEGER NOT NULL PRIMARY KEY,
+    RID INTEGER,
+    sourcedatabase VARCHAR(50),
+    kingdom VARCHAR(25),
+    phylum VARCHAR(25),
+    class VARCHAR(25),
+    "order" VARCHAR(25),
+    family VARCHAR(25),
+    genus VARCHAR(25),
+    species VARCHAR(25)
+);
+
+CREATE TABLE Assignment(
+    seqID INTEGER,
+    taxoID INTEGER,
     primers VARCHAR(10),
-    annealingTemp INTEGER,
-    doi VARCHAR(30),
-    groupNum INTEGER
-);
+    doi VARCHAR(50),
 
-CREATE TABLE Entry(
-    runNum INTEGER PRIMARY KEY,
-    entryDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    platform VARCHAR(100),
-    operator VARCHAR(100)
-);
+    PRIMARY KEY (seqID, taxoID),
 
-CREATE TABLE SequenceInEntry(
-    accessNum INTEGER,
-    runNum INTEGER,
-    groupNum INTEGER,
-    CONSTRAINT accessNum
-    FOREIGN KEY (accessNum) REFERENCES Sequence (accessNum)
+    CONSTRAINT seqID
+    FOREIGN KEY (seqID) REFERENCES Sequence (seqID)
     ON DELETE CASCADE,
-    CONSTRAINT runNum
-    FOREIGN KEY (runNum) REFERENCES Entry (runNum)
+
+    CONSTRAINT runID
+    FOREIGN KEY (taxoID) REFERENCES Taxonomy (taxoID)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Run(
+    runID INTEGER PRIMARY KEY,
+    entrydate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    operator VARCHAR(100),
+    platform VARCHAR(100)
+);
+
+CREATE TABLE Log(
+    seqID INTEGER,
+    runID INTEGER,
+    groupID INTEGER,
+
+    PRIMARY KEY (seqID, runID),
+
+    CONSTRAINT seqID
+    FOREIGN KEY (seqID) REFERENCES Sequence (seqID)
+    ON DELETE CASCADE,
+
+    CONSTRAINT runID
+    FOREIGN KEY (runID) REFERENCES Run (runID)
     ON DELETE CASCADE
 );
